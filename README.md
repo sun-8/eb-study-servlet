@@ -7,7 +7,7 @@
 https://www.docker.com/products/docker-desktop/
 
 ## Apache Tomcat 설치
-https://tomcat.apache.org/download-90.cgi
+https://tomcat.apache.org/download-10.cgi
 
 ## Docker Compose 실행 - MySql
 ``` 
@@ -62,4 +62,8 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
 ![database_structure.png](database_structure.png)
 
 ## 이슈
+- Tomcat version 수정 (02.17 해결)
+  - tomcat 9는 Servlet 4.0을 지원하고 javax.* 패키지를 사용
+  - tomcat 10은 Servlet 5.0을 지원하고 jakarta.* 패키지를 사용
+  - build.gradle에 jakarta를 사용하고 있기 때문에 tomcat 10으로 변경
 - [lombok 추가 안됨 (02.19 해결)](https://velog.io/@sun-8/jspservlet-lombok-추가-안됨)
