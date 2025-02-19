@@ -67,3 +67,4 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
   - tomcat 10은 Servlet 5.0을 지원하고 jakarta.* 패키지를 사용
   - build.gradle에 jakarta를 사용하고 있기 때문에 tomcat 10으로 변경
 - [lombok 추가 안됨 (02.19 해결)](https://velog.io/@sun-8/jspservlet-lombok-추가-안됨)
+- jstl 적용 안됨
