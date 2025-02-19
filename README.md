@@ -60,3 +60,6 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
 
 ## DB 구조
 ![database_structure.png](database_structure.png)
+
+## 이슈
+- [lombok 추가 안됨 (02.19 해결)](https://velog.io/@sun-8/jspservlet-lombok-추가-안됨)
