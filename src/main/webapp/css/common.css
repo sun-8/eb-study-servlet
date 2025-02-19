@@ -1,0 +1,19 @@
+
+.body{
+    padding: 4% 2%;
+    font-size: 15px;
+}
+
+.input,
+.select,
+.button{
+    border-radius: 0px;
+    height: 30px;
+    margin: 0px 5px 0px 5px;
+    font-size: 14px;
+}
+
+.distance{
+    display: inline;
+    margin: 20px;
+}

@@ -1,0 +1,36 @@
+
+/* 검색 조건 */
+.search{
+    height: 30px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: solid;
+    border-width: 1px 0px 1px 0px;
+}
+
+.search .srchDateInput{
+    width: 200px;
+}
+
+.search .srchSelect{
+    width: 150px;
+}
+
+.search .srchWordInput{
+    width: 600px;
+}
+
+.search .srchButton{
+    background-color: black;
+    color: white;
+    width: 80px;
+}
+
+/* 목록 */
+.list{
+
+}
+
+.footer{
+    height: 80px;
+}

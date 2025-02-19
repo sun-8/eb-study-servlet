@@ -68,3 +68,164 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
   - build.gradle에 jakarta를 사용하고 있기 때문에 tomcat 10으로 변경
 - [lombok 추가 안됨 (02.19 해결)](https://velog.io/@sun-8/jspservlet-lombok-추가-안됨)
 - jstl 적용 안됨
+
+---
+## Command Pattern
+행동(behavioral) 패턴 중 하나.<br>
+요청을 객체의 형태로 캡슐화하여 재이용하거나 취소할 수 있도록 요청에 필요한 정보를 저장하거나 로그에 남기는 패턴<br>
+요청에 사용되는 각종 명령어들을 추상 클래스와 구체 클래스로 분리하여 단순화<br>
+1. Command : 인터페이스. 요청을 수행하는 메서드를 정의
+2. ConcreteCommand : 인터페이스를 구현한 클래스. 실제로 요청을 처리하는 작업
+3. Receiver : 실제 작업을 수행하는 객체. 핵심 로직 구현
+4. Invoker : 사용자의 요청을 Command 객체로 변환. 이 객체에 저장하고 실행하는 역할
+
+- Command.java => Command
+- BoardListCommand.java => ConcreteCommand + Receiver
+- BoardController => Invoker
+
+```java
+// 1. Command : 
+// 요청을 캡슐화.
+package com.study.web.command;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+/**
+ * Command 패턴을 위한 interface 정의
+ */
+public interface Command {
+
+  /**
+   * 요청을 캡슐화하여 요청 보내는이(Invoker)와 요청 받는이(Receiver)를 분리
+   * @param req
+   * @param resp
+   */
+  public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+}
+
+```
+```java
+// 2. ConcreteCommand : 
+// 인터페이스를 구현. 실제로 요청을 처리. 여러 종류의 클래스.
+// 3. Receiver : 
+// execute() 안에서 실제 작업을 수행하는 객체. 핵심 로직 구현.
+package com.study.web.command.board;
+
+import com.study.web.command.Command;
+import com.study.web.dto.BoardListDTO;
+import com.study.web.dto.CategoryDTO;
+import com.study.web.service.BoardService;
+import com.study.web.service.CategoryService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.List;
+
+public class BoardListCommand implements Command {
+
+  /**
+   * 게시판 목록
+   * @param req
+   * @param resp
+   * @throws ServletException
+   * @throws IOException
+   */
+  @Override
+  public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    BoardService boardService = new BoardService();
+    CategoryService categoryService = new CategoryService();
+
+    // 검색조건
+    BoardListDTO boardListDTO = boardService.getBoardListSrchData(req);
+
+    // category 목록
+    List<CategoryDTO> categoryDTOList = categoryService.getAll();
+
+    req.setAttribute("boardListDTO", boardListDTO);
+    req.setAttribute("categoryDTOList", categoryDTOList);
+
+    req.getRequestDispatcher("/boardList.jsp").forward(req, resp);
+  }
+}
+
+
+```
+
+```java
+// Invoker :
+// /board/* 주소 모두 해당 Servlet을 탐. 하나의 Servlet에 한 매핑주소를 써야하는 한계 극복.
+// 사용자의 요청을 Command 객체로 변환. 이 객체에 저장하고 실행하는 역할
+package com.study.web.controller;
+
+import com.study.web.command.Command;
+import com.study.web.command.board.BoardListCommand;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
+/**
+ * /board/에 속하는 주소 모두 이곳에서 시작
+ */
+@WebServlet("/board/*")
+public class BoardController extends HttpServlet {
+    Logger logger = Logger.getLogger(BoardController.class.getName());
+
+    Map<String, Command> commands = new HashMap<String, Command>();
+
+    @Override
+    public void init() throws ServletException {
+        commands.put("boardList", new BoardListCommand());
+        commands.put("boardDetail", new BoardListCommand());
+        commands.put("boardReg", new BoardListCommand());
+        commands.put("boardMod", new BoardListCommand());
+        commands.put("boardDel", new BoardListCommand());
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("doGet");
+        String path = req.getRequestURI();
+        String commandKey = path.substring(path.lastIndexOf("/") + 1);
+        Command command = commands.get(commandKey);
+        if (command != null) {
+            command.execute(req, resp);
+        } else {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("doPost");
+        String path = req.getRequestURI();
+        String commandKey = path.substring(path.lastIndexOf("/") + 1);
+        Command command = commands.get(commandKey);
+        if (command != null) {
+            command.execute(req, resp);
+        } else {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+}
+
+```
+
+---
+## service - serviceImpl VS service
+이 프로젝트에서 service와 serviceImpl을 사용할지, service만 사용할지를 고민해보았다.<br>
+인터페이스와 이를 구현한 클래스의 구조는 캡슐화의 이점도 있지만 다향성에 큰 이점이 있다고 생각한다.<br>
+List 인터페이스에는 ArrayList, LinkedList, ...가 있듯 하나의 인터페이스를 여러 클래스에 사용했을 때 더 빛을 바란다고 생각한다.<br>
+그런데 이 service - serviceImpl은 1:1 구조이기 때문에 코드만 더 복잡하게 만드는 것이라고 생각하여 service만 사용하기로 했다.
