@@ -5,13 +5,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BoardListDTO {
+public class BoardDTO {
     private int id;
     private String categoryId;
+    private String categoryName;
     private String userName;
     private String password;
     private String title;
     private String contents;
+    private int view;
     private String file1;
     private String file2;
     private String file3;

@@ -27,8 +27,23 @@
 }
 
 /* 목록 */
-.list{
+.table{
+    width: 100%;
+    border-collapse: collapse; /*셀 간격 제거*/
+}
 
+.table tr{
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.table th{
+    border-bottom: 3px solid black;
+    padding: 8px;
+}
+
+.table td{
+    padding: 8px;
 }
 
 .footer{

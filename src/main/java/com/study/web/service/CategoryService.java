@@ -15,7 +15,7 @@ public class CategoryService {
      * 카테고리 모든 데이터 목록 조회
      * @return
      */
-    public List<CategoryDTO> getAll() {
+    public List<CategoryDTO> getCategoryList() {
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
         CategoryDAO categoryDAO = new CategoryDAO();
 

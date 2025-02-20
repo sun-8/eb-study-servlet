@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
  */
 public class CommonUtil {
 
+    // 문자열 -----------------------------------
+
     /**
      * 문자열이 비어있는지 확인
      * @param str
@@ -34,6 +36,22 @@ public class CommonUtil {
             return str;
         }
     }
+
+    /**
+     * 문자열을 특정 길이가 넘으면 잘라서 반환
+     * @param str
+     * @param length
+     * @return
+     */
+    public static String stringCut(String str, int length) {
+        if (str != null && str.length() > length) {
+            return str.substring(0, length) + "...";
+        } else {
+            return str;
+        }
+    }
+
+    // 날짜 -------------------------------------
 
     /**
      * 주어진 날짜를 원하는 format으로 변경

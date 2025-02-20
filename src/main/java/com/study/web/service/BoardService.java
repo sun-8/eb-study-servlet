@@ -1,30 +1,70 @@
 package com.study.web.service;
 
 import com.study.util.CommonUtil;
-import com.study.web.dto.BoardListDTO;
+import com.study.web.dao.BoardDAO;
+import com.study.web.dto.BoardDTO;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class BoardService {
+    Logger logger = Logger.getLogger(BoardService.class.getName());
 
     /**
      * 게시판 목록 검색조건 반환
      * @param req
      * @return
      */
-    public BoardListDTO getBoardListSrchData(HttpServletRequest req) {
-        BoardListDTO boardListDTO = new BoardListDTO();
+    public BoardDTO getBoardListSrchData(HttpServletRequest req) {
+        BoardDTO boardDTO = new BoardDTO();
 
         if (CommonUtil.isEmpty(req.getParameter("srchRegDateStart"))
                 && CommonUtil.isEmpty(req.getParameter("srchRegDateEnd"))) {
-            boardListDTO.setSrchRegDateEnd(CommonUtil.localNowDate());
-            boardListDTO.setSrchRegDateStart(CommonUtil.localDatePlusY(boardListDTO.getSrchRegDateEnd(), -1));
+            boardDTO.setSrchRegDateEnd(CommonUtil.localNowDate());
+            boardDTO.setSrchRegDateStart(CommonUtil.localDatePlusY(boardDTO.getSrchRegDateEnd(), -1));
         } else {
-            boardListDTO.setSrchRegDateStart(req.getParameter("srchRegDateStart"));
-            boardListDTO.setSrchRegDateEnd(req.getParameter("srchRegDateEnd"));
+            boardDTO.setSrchRegDateStart(req.getParameter("srchRegDateStart"));
+            boardDTO.setSrchRegDateEnd(req.getParameter("srchRegDateEnd"));
         }
-        boardListDTO.setSrchCategory(req.getParameter("srchCategory"));
-        boardListDTO.setSrchWord(req.getParameter("srchWord"));
+        boardDTO.setSrchCategory(CommonUtil.nvl(req.getParameter("srchCategory"), ""));
+        boardDTO.setSrchWord(CommonUtil.nvl(req.getParameter("srchWord"), ""));
 
-        return boardListDTO;
+        return boardDTO;
+    }
+
+    /**
+     * 게시물 총 개수
+     * @return
+     */
+    public int cntBoardList() {
+        int cnt = 0;
+        BoardDAO boardDAO = new BoardDAO();
+
+        try {
+            cnt = boardDAO.selectCnt();
+        } catch (SQLException e) {
+            logger.info("SQLException : " + e.getMessage());
+        }
+        return cnt;
+    }
+
+    /**
+     * 게시판 목록 조회
+     * @param boardDTO
+     * @return
+     */
+    public List<BoardDTO> getBoardList(BoardDTO boardDTO) {
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        BoardDAO boardDAO = new BoardDAO();
+
+        try {
+            boardDTOList = boardDAO.selectAll(boardDTO);
+        } catch (SQLException e) {
+            logger.info("SQLException: " + e.getMessage());
+        }
+        return boardDTOList;
     }
 }

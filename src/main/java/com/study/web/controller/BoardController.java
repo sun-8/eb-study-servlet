@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * /board/에 속하는 주소 모두 이곳에서 시작
  */
-@WebServlet("/board/*")
+@WebServlet("/board/free/*")
 public class BoardController extends HttpServlet {
     Logger logger = Logger.getLogger(BoardController.class.getName());
 
@@ -24,7 +24,7 @@ public class BoardController extends HttpServlet {
 
     @Override
     public void init() {
-        commands.put("boardList", new BoardListCommand());
+        commands.put("list", new BoardListCommand());
         commands.put("boardDetail", new BoardListCommand());
         commands.put("boardReg", new BoardListCommand());
         commands.put("boardMod", new BoardListCommand());
