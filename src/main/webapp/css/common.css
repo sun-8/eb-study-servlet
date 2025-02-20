@@ -1,0 +1,67 @@
+
+.body{
+    padding: 4% 2%;
+    font-size: 15px;
+}
+
+.input,
+.select,
+.button{
+    border-radius: 0px;
+    height: 30px;
+    margin: 0px 5px 0px 5px;
+    font-size: 14px;
+}
+
+.distance{
+    display: inline;
+    margin: 20px;
+}
+
+/* text 정렬 */
+
+.center{
+    text-align: center;
+}
+
+.left{
+    text-align: left;
+}
+
+.right{
+    text-align: right;
+}
+
+/* width 정의 */
+
+.wper3{
+    width: 3%;
+}
+
+.wper5{
+    width: 5%;
+}
+
+.wper7{
+    width: 7%;
+}
+
+.wper10{
+    width: 10%;
+}
+
+.wper20{
+    width: 20%;
+}
+
+.wper30{
+    width: 30%;
+}
+
+.wper50{
+    width: 50%;
+}
+
+.wper60{
+    width: 60%;
+}
