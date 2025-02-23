@@ -19,13 +19,18 @@
 <body class="body">
     <div class="search">
         <form id="srchForm" method="get" action="/board/free/list">
+            <input type="hidden" name="nowPage" id="nowPage" value="${pageDTO.nowPage}">
+            <input type="hidden" name="startPage" id="startPage" value="${pageDTO.startPage}">
+            <input type="hidden" name="endPage" id="endPage" value="${pageDTO.endPage}">
+
             <label for="srchRegDateStart">등록일</label>
             <input type="date" name="srchRegDateStart" id="srchRegDateStart"
                    class="input srchDateInput" max="9999-12-31" value="${boardSrchData.srchRegDateStart}">
             ~
             <input type="date" name="srchRegDateEnd" id="srchRegDateEnd"
                    class="input srchDateInput" max="9999-12-31" value="${boardSrchData.srchRegDateEnd}">
-            <div class="distance"></div>
+            <div class="disIn m20"></div>
+
             <select class="select srchSelect" name="srchCategory">
                 <option value="" selected>카테고리 선택</option>
                 <c:forEach var="item" items="${categoryDTOList}">
@@ -34,15 +39,17 @@
                 </option>
                 </c:forEach>
             </select>
+
             <input type="text" name="srchWord" id="srchWord"
                    class="input srchWordInput" placeholder="검색어를 입력해 주세요. (제목+작성자+내용)"
                    value="${boardSrchData.srchWord}">
-            <div class="distance"></div>
+            <div class="disIn m20"></div>
+
             <button class="button srchButton" id="searchBtn">검색</button>
         </form>
     </div>
-    <div>
-        <span>총 ${boardListCnt}건</span>
+    <div class="list">
+        <span>총 ${pageDTO.dataCnt}건</span>
         <table class="table">
             <thead>
             <tr>
@@ -58,7 +65,7 @@
             <tbody>
             <c:forEach var="item" items="${boardDTOList}">
             <tr>
-                <td class="center">${item.categoryId}</td>
+                <td class="center">${item.categoryName}</td>
                 <td class="center">
                     <c:if test="${!CommonUtil.isEmpty(item.file1)
                             || !CommonUtil.isEmpty(item.file2)
@@ -76,8 +83,59 @@
             </tbody>
         </table>
     </div>
-    <div class="footer">
+    <div>
+        <div class="center mt20">
+            <ul id="page">
+                <c:choose>
+                    <c:when test="${pageDTO.endPage > pageDTO.lookPageCnt}"><%-- 화면에 보여줘야 하는 갯수보다 페이지가 많으면 --%>
+                        <li class="disInBl mbt5" id="goFirst" value="${pageDTO.startPage}"><<</li>
+                        <li class="disInBl mbt5" id="goBefore" value="${pageDTO.nowPage - 1}"><</li>
 
+                        <c:choose>
+                            <c:when test="${pageDTO.nowPage < pageDTO.lookPageCnt}"><%-- 1 2 3 ... 10 --%>
+                                <c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.lookPageCnt}">
+                                    <li class="disInBl mbt5 <c:if test="${i == pageDTO.nowPage}">txtRed</c:if>"
+                                        value="${i}">${i}</li>
+                                </c:forEach>
+                                ...
+                                <li class="disInBl mbt5" value="${pageDTO.endPage}">${pageDTO.endPage}</li>
+                            </c:when>
+                            <c:when test="${pageDTO.nowPage + 1 >= pageDTO.endPage}"><%-- 1 ... 8 9 10 --%>
+                                <li class="disInBl mbt5" value="${pageDTO.startPage}">${pageDTO.startPage}</li>
+                                ...
+                                <c:forEach var="i" begin="${pageDTO.endPage - pageDTO.lookPageCnt + 1}" end="${pageDTO.endPage}">
+                                    <li class="disInBl mbt5 <c:if test="${i == pageDTO.nowPage}">txtRed</c:if>"
+                                        value="${i}">${i}</li>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise><%-- 1 ... 4 5 6 ... 10 --%>
+                                <li class="disInBl mbt5" value="${pageDTO.startPage}">${pageDTO.startPage}</li>
+                                ...
+                                <c:forEach var="i" begin="${pageDTO.nowPage - 1}" end="${pageDTO.nowPage + 1}">
+                                    <li class="disInBl mbt5 <c:if test="${i == pageDTO.nowPage}">txtRed</c:if>"
+                                        value="${i}">${i}</li>
+                                </c:forEach>
+                                ...
+                                <li class="disInBl mbt5" value="${pageDTO.endPage}">${pageDTO.endPage}</li>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <li class="disInBl mbt5" id="goAfter" value="${pageDTO.nowPage + 1}">></li>
+                        <li class="disInBl mbt5" id="goLast" value="${pageDTO.endPage}">>></li>
+                    </c:when>
+                    <c:otherwise><%-- 화면에 보여줘야 하는 갯수보다 페이지가 많지 않으면 --%>
+                        <li class="disInBl mbt5" id="goBefore" value="${pageDTO.nowPage - 1}"><</li>
+
+                        <c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}">
+                            <li class="disInBl mbt5 <c:if test="${i == pageDTO.nowPage}">txtRed</c:if>"
+                                value="${i}">${i}</li>
+                        </c:forEach>
+
+                        <li class="disInBl mbt5" id="goAfter" value="${pageDTO.nowPage + 1}">></li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
     </div>
 
 

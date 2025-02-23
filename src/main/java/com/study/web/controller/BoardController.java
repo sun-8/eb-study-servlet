@@ -24,19 +24,12 @@ public class BoardController extends HttpServlet {
 
     @Override
     public void init() {
-        commands.put("list", new BoardListCommand());
-        commands.put("boardDetail", new BoardListCommand());
-        commands.put("boardReg", new BoardListCommand());
-        commands.put("boardMod", new BoardListCommand());
-        commands.put("boardDel", new BoardListCommand());
+        commands.put("GET-list", new BoardListCommand());
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("doGet");
-        String path = req.getRequestURI();
-        String commandKey = path.substring(path.lastIndexOf("/") + 1);
-        Command command = commands.get(commandKey);
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Command command = getCommand(req);
         if (command != null) {
             command.execute(req, resp);
         } else {
@@ -44,16 +37,15 @@ public class BoardController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("doPost");
+    /**
+     * 요청 처리하여 command 객체 반환
+     * @param req
+     * @return
+     */
+    protected Command getCommand(HttpServletRequest req) {
         String path = req.getRequestURI();
-        String commandKey = path.substring(path.lastIndexOf("/") + 1);
-        Command command = commands.get(commandKey);
-        if (command != null) {
-            command.execute(req, resp);
-        } else {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
+        String method = req.getMethod();
+        String commandKey = method + "-" + path.substring(path.lastIndexOf("/") + 1);
+        return commands.get(commandKey);
     }
 }

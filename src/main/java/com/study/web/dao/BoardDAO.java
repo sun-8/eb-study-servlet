@@ -3,8 +3,12 @@ package com.study.web.dao;
 import com.study.util.CommonUtil;
 import com.study.util.JdbcUtil;
 import com.study.web.dto.BoardDTO;
+import com.study.web.dto.PageDTO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,12 +39,50 @@ public class BoardDAO {
     }
 
     /**
+     * 게시물 총 개수 (+검색조건)
+     * @return
+     * @throws SQLException
+     */
+    public int selectCnt(BoardDTO boardDTO) throws SQLException {
+        int cnt = 0;
+        JdbcUtil jdbcUtil = new JdbcUtil();
+
+        try(Connection conn = jdbcUtil.getConnection();
+            Statement stmt = conn.createStatement();) {
+
+            StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM BOARD WHERE 1=1 ");
+            if (!CommonUtil.isEmpty(boardDTO.getSrchRegDateStart())) {
+                sql.append("AND DATE_FORMAT(REG_DTTM, '%Y-%m-%d') >= '")
+                        .append(boardDTO.getSrchRegDateStart()).append("' ");
+            }
+            if (!CommonUtil.isEmpty(boardDTO.getSrchRegDateEnd())) {
+                sql.append("AND DATE_FORMAT(REG_DTTM, '%Y-%m-%d') <= '")
+                        .append(boardDTO.getSrchRegDateEnd()).append("' ");
+            }
+            if (!CommonUtil.isEmpty(boardDTO.getSrchCategory())) {
+                sql.append("AND CATEGORY_ID = '")
+                        .append(boardDTO.getSrchCategory()).append("' ");
+            }
+            if (!CommonUtil.isEmpty(boardDTO.getSrchWord())) {
+                sql.append("AND CONCAT(IFNULL(USER_NAME, ''), IFNULL(TITLE, ''), IFNULL(CONTENTS, '')) LIKE CONCAT('%', TRIM('")
+                        .append(boardDTO.getSrchWord()).append("'), '%') ");
+            }
+            try(ResultSet rs = stmt.executeQuery(sql.toString())) {
+                if (rs.next()) {
+                    cnt = rs.getInt(1);
+                }
+            }
+        }
+        return cnt;
+    }
+
+    /**
      * 게시판 목록 조회
      * @param boardDTO
      * @return
      * @throws SQLException
      */
-    public List<BoardDTO> selectAll(BoardDTO boardDTO) throws SQLException {
+    public List<BoardDTO> selectAll(BoardDTO boardDTO, PageDTO pageDTO) throws SQLException {
         JdbcUtil jdbcUtil = new JdbcUtil();
         List<BoardDTO> boardDTOList = new ArrayList<>();
 
@@ -78,8 +120,8 @@ public class BoardDAO {
                 sql.append("AND CONCAT(IFNULL(USER_NAME, ''), IFNULL(TITLE, ''), IFNULL(CONTENTS, '')) LIKE CONCAT('%', TRIM('")
                         .append(boardDTO.getSrchWord()).append("'), '%') ");
             }
-            sql.append("ORDER BY ID DESC ").append("LIMIT ").append(0).append(", ").append(10);
-            logger.info(sql.toString());
+            sql.append("ORDER BY ID DESC ").
+                    append("LIMIT ").append(pageDTO.getStartIdx()).append(", ").append(pageDTO.getPageSize());
 
             try (ResultSet rs = stmt.executeQuery(sql.toString())) {
                 while(rs.next()) {

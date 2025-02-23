@@ -13,12 +13,31 @@
     font-size: 14px;
 }
 
-.distance{
+/* display */
+
+.disIn{
     display: inline;
+}
+
+.disInBl{
+    display: inline-block;
+}
+
+/* margin */
+
+.m20{
     margin: 20px;
 }
 
-/* text 정렬 */
+.mt20{
+    margin-top: 20px;
+}
+
+.mbt5{
+    margin: 0px 5px;
+}
+
+/* text */
 
 .center{
     text-align: center;
@@ -32,10 +51,22 @@
     text-align: right;
 }
 
+.txtUline{
+    text-decoration: underline;
+}
+
+.txtRed{
+    color: red;
+}
+
 /* width 정의 */
 
 .wper3{
     width: 3%;
+}
+
+.wper4{
+    width: 4%;
 }
 
 .wper5{
