@@ -27,6 +27,10 @@
 }
 
 /* 목록 */
+.list{
+    height: 450px;
+}
+
 .table{
     width: 100%;
     border-collapse: collapse; /*셀 간격 제거*/
@@ -46,6 +50,10 @@
     padding: 8px;
 }
 
-.footer{
-    height: 80px;
+#page li{
+    cursor: pointer;
+}
+
+#page li:hover{
+    text-decoration: underline;
 }
