@@ -53,7 +53,6 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
 - [lombok 추가 안됨 (02.19 해결)](https://velog.io/@sun-8/jspservlet-lombok-추가-안됨)
 - [jstl 적용 안됨 (02.20 해결)](https://velog.io/@sun-8/jspservlet-jstl추가-안됨)
 
----
 ## Command Pattern
 행동(behavioral) 패턴 중 하나.<br>
 요청을 객체의 형태로 캡슐화하여 재이용하거나 취소할 수 있도록 요청에 필요한 정보를 저장하거나 로그에 남기는 패턴<br>
@@ -68,13 +67,11 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
 - [BoardService.java](/src/main/java/com/study/web/service/BoardService.java) => Receiver
 - [BoardController.java](/src/main/java/com/study/web/controller/BoardController.java) => Invoker
 
----
 ## service - serviceImpl VS service
 이 프로젝트에서 service와 serviceImpl을 사용할지, service만 사용할지를 고민해보았다.<br>
 인터페이스와 이를 구현한 클래스의 구조는 캡슐화의 이점도 있지만 다향성에 큰 이점이 있다고 생각한다.<br>
 List 인터페이스에는 ArrayList, LinkedList, ...가 있듯 하나의 인터페이스를 여러 클래스에 사용했을 때 더 빛을 바란다고 생각한다.<br>
 그런데 이 service - serviceImpl은 1:1 구조이기 때문에 코드만 더 복잡하게 만드는 것이라고 생각하여 service만 사용하기로 했다.
 
----
 ## 후기
 비록 게시판 목록만 구현했지만 Command 패턴을 구현함으로써 Servlet의 한계와 Spring을 사용한 이유에 대해 조금은 알 수 있었다.
