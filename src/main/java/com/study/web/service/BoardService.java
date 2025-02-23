@@ -1,10 +1,8 @@
 package com.study.web.service;
 
-import com.study.util.CommonUtil;
 import com.study.web.dao.BoardDAO;
 import com.study.web.dto.BoardDTO;
 import com.study.web.dto.PageDTO;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,28 +11,6 @@ import java.util.logging.Logger;
 
 public class BoardService {
     Logger logger = Logger.getLogger(BoardService.class.getName());
-
-    /**
-     * 게시판 목록 검색조건 반환
-     * @param req
-     * @return
-     */
-    public BoardDTO getBoardListSrchData(HttpServletRequest req) {
-        BoardDTO boardDTO = new BoardDTO();
-
-        if (CommonUtil.isEmpty(req.getParameter("srchRegDateStart"))
-                && CommonUtil.isEmpty(req.getParameter("srchRegDateEnd"))) {
-            boardDTO.setSrchRegDateEnd(CommonUtil.localNowDate());
-            boardDTO.setSrchRegDateStart(CommonUtil.localDatePlusY(boardDTO.getSrchRegDateEnd(), -1));
-        } else {
-            boardDTO.setSrchRegDateStart(req.getParameter("srchRegDateStart"));
-            boardDTO.setSrchRegDateEnd(req.getParameter("srchRegDateEnd"));
-        }
-        boardDTO.setSrchCategory(CommonUtil.nvl(req.getParameter("srchCategory"), ""));
-        boardDTO.setSrchWord(CommonUtil.nvl(req.getParameter("srchWord"), ""));
-
-        return boardDTO;
-    }
 
     /**
      * 게시물 총 개수
