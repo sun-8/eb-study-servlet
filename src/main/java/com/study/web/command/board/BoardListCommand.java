@@ -68,6 +68,6 @@ public class BoardListCommand implements Command {
         req.setAttribute("pageDTO", pageDTO);
         req.setAttribute("boardDTOList", boardDTOList);
 
-        req.getRequestDispatcher("/boardList.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/boardList.jsp").forward(req, resp);
     }
 }
