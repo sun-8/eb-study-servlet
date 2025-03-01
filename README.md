@@ -76,13 +76,13 @@ List 인터페이스에는 ArrayList, LinkedList, ...가 있듯 하나의 인터
 
 ## jsp 파일들을 WEB-INF/로 위치시키는 이유
 1. 직접 접근 제한 (Access Restriction)
-  - WEB-INF 폴더는 클라이언트(브라우저)에서 직접 접근할 수 없는 보호된 경로.
-  - http://localhost:8080/WEB-INF/index.jsp 로 접근해도 404 발생.
-  - jsp 파일을 WEB-INF 폴더 안에 두면 클라이언트가 직접 접근하지 못하도록 보호 가능.
-  - 즉 servlet을 거쳐야만 접근이 가능
+- WEB-INF 폴더는 클라이언트(브라우저)에서 직접 접근할 수 없는 보호된 경로.
+- http://localhost:8080/WEB-INF/index.jsp 로 접근해도 404 발생.
+- jsp 파일을 WEB-INF 폴더 안에 두면 클라이언트가 직접 접근하지 못하도록 보호 가능.
+- 즉 servlet을 거쳐야만 접근이 가능
 2. 보안 강화 (Security)
-   - jsp 파일을 WEB-INF 폴더 밖에 두면 클라이언트가 직접 접근 가능해서 jsp 내부에서 처리하는 로직이 노출될 가능성 있음.
-   - 민감한 페이지(관리자페이지 같은..)는 WEB-INF 폴더 안에 두는 것이 안전.
+- jsp 파일을 WEB-INF 폴더 밖에 두면 클라이언트가 직접 접근 가능해서 jsp 내부에서 처리하는 로직이 노출될 가능성 있음.
+- 민감한 페이지(관리자페이지 같은..)는 WEB-INF 폴더 안에 두는 것이 안전.
 
 ## 후기
 Command 패턴을 이해하고 적용하는 데에 시간을 많이 썼다.<br>
