@@ -52,6 +52,7 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
   - build.gradle에 jakarta를 사용하고 있기 때문에 tomcat 10으로 변경
 - [lombok 추가 안됨 (02.19 해결)](https://velog.io/@sun-8/jspservlet-lombok-추가-안됨)
 - [jstl 적용 안됨 (02.20 해결)](https://velog.io/@sun-8/jspservlet-jstl추가-안됨)
+- [jsp 파일들을 WEB-INF 폴더 안으로 넣었더니 JDBC 오류 발생 (03.01 해결)](https://velog.io/@sun-8/jspservlet-jsp-파일을-WEB-INF-폴더-안에-위치-후-JDBC-오류)
 
 ## Command Pattern
 행동(behavioral) 패턴 중 하나.<br>
@@ -73,5 +74,16 @@ DAO(Data Access Object) 패턴을 활용하여 DB와 연동<br>
 List 인터페이스에는 ArrayList, LinkedList, ...가 있듯 하나의 인터페이스를 여러 클래스에 사용했을 때 더 빛을 바란다고 생각한다.<br>
 그런데 이 service - serviceImpl은 1:1 구조이기 때문에 코드만 더 복잡하게 만드는 것이라고 생각하여 service만 사용하기로 했다.
 
+## jsp 파일들을 WEB-INF/로 위치시키는 이유
+1. 직접 접근 제한 (Access Restriction)
+  - WEB-INF 폴더는 클라이언트(브라우저)에서 직접 접근할 수 없는 보호된 경로.
+  - http://localhost:8080/WEB-INF/index.jsp 로 접근해도 404 발생.
+  - jsp 파일을 WEB-INF 폴더 안에 두면 클라이언트가 직접 접근하지 못하도록 보호 가능.
+  - 즉 servlet을 거쳐야만 접근이 가능
+2. 보안 강화 (Security)
+   - jsp 파일을 WEB-INF 폴더 밖에 두면 클라이언트가 직접 접근 가능해서 jsp 내부에서 처리하는 로직이 노출될 가능성 있음.
+   - 민감한 페이지(관리자페이지 같은..)는 WEB-INF 폴더 안에 두는 것이 안전.
+
 ## 후기
-비록 게시판 목록만 구현했지만 Command 패턴을 구현함으로써 Servlet의 한계와 Spring을 사용한 이유에 대해 조금은 알 수 있었다.
+Command 패턴을 이해하고 적용하는 데에 시간을 많이 썼다.<br>
+비록 게시판 목록만 구현했지만 Command 패턴을 구현함으로써 Servlet의 한계와 Spring을 사용한 이유에 대해 알 수 있었다.
