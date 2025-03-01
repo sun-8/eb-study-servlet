@@ -86,4 +86,6 @@ List 인터페이스에는 ArrayList, LinkedList, ...가 있듯 하나의 인터
 
 ## 후기
 Command 패턴을 이해하고 적용하는 데에 시간을 많이 썼다.<br>
-비록 게시판 목록만 구현했지만 Command 패턴을 구현함으로써 Servlet의 한계와 Spring을 사용한 이유에 대해 알 수 있었다.
+비록 게시판 목록만 구현했지만 Command 패턴을 구현함으로써 Servlet의 한계와 Spring을 사용한 이유에 대해 알 수 있었다.<br>
+다음 주 부터 이 프로젝트를 기반으로 springboot로 프로젝트를 수행한다.<br>
+[servlet을 springboot로... repository 가기 ><](https://github.com/sun-8/eb-study-springboot)
